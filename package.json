@@ -1,0 +1,14 @@
+{
+  "name": "aqiqahpro-landing",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Landing page AqiqahPro dengan HTML, JavaScript, dan Tailwind CSS.",
+  "scripts": {
+    "dev": "node scripts/serve.mjs",
+    "build:css": "tailwindcss -i css/input.css -o css/styles.css --minify",
+    "build": "npm run build:css && node scripts/build.mjs"
+  },
+  "devDependencies": {
+    "tailwindcss": "3.4.17"
+  }
+}
