@@ -992,3 +992,14 @@
   .actual-screenshot figcaption { align-items: flex-start; flex-direction: column; padding: 12px; gap: 8px; font-size: 10px; }
   .actual-product-note { text-align: left; font-size: 9px; margin-inline: 0; }
 }
+
+.feature-whatsapp.has-system-shot { display: block; }
+.feature-whatsapp.has-system-shot .feature-copy { padding-bottom: 0; }
+.feature-whatsapp.has-system-shot .availability { position: static; }
+.feature-whatsapp.has-system-shot .feature-copy > p { max-width: none; }
+.feature-system-shot { margin: 24px 24px 22px; border: 1px solid #dbe3d0; border-radius: 8px; overflow: hidden; background: #fff; }
+.feature-system-shot img { width: 100%; height: auto; display: block; }
+.feature-system-shot figcaption { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 11px 13px; border-top: 1px solid #e3e8dc; font-size: 9px; color: #5d7050; }
+.feature-system-shot figcaption a { display: inline-grid; place-items: center; min-width: 28px; min-height: 28px; border-radius: 4px; }
+.feature-system-shot .icon { width: 14px; height: 14px; }
+@media (max-width: 767px) { .feature-system-shot { margin: 23px 18px 18px; } }
