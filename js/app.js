@@ -34,7 +34,7 @@
     menuToggle.setAttribute('aria-expanded', String(!isOpen));
     mobileMenu.hidden = isOpen;
   });
-  $$('a, [data-open-demo], [data-open-pricing]', mobileMenu || document)
+  $$('a, [data-open-demo], [data-open-pricing], [data-open-contact], [data-open-core]', mobileMenu || document)
     .forEach((link) => link.addEventListener('click', closeMenu));
   document.addEventListener('keydown', (event) => {
     if (event.key !== 'Escape' || menuToggle?.getAttribute('aria-expanded') !== 'true') return;
@@ -50,20 +50,24 @@
   const dialogOpeners = new WeakMap();
   const openDialog = (dialog, opener) => {
     if (!dialog || dialog.open) return;
-    dialogOpeners.set(dialog, opener || document.activeElement);
+    const previousDialog = $('dialog[open]');
+    const returnTarget = previousDialog ? dialogOpeners.get(previousDialog) : opener || document.activeElement;
+    dialogOpeners.set(dialog, returnTarget);
+    previousDialog?.close();
     closeMenu();
     dialog.showModal();
     document.body.classList.add('dialog-open');
   };
   $$('dialog').forEach((dialog) => {
     dialog.addEventListener('close', () => {
-      if (!$('dialog[open]')) document.body.classList.remove('dialog-open');
+      if ($('dialog[open]')) return;
+      document.body.classList.remove('dialog-open');
       const opener = dialogOpeners.get(dialog);
       const openerIsHidden = opener?.closest?.('[hidden]');
       if (openerIsHidden && mobileMenu?.contains(opener)) {
-        menuToggle?.focus();
-      } else if (opener?.isConnected && !openerIsHidden) {
-        opener.focus();
+        menuToggle?.focus({ preventScroll: true });
+      } else if (opener?.isConnected && !openerIsHidden && !opener.closest('dialog:not([open])')) {
+        opener.focus({ preventScroll: true });
       }
     });
     dialog.addEventListener('click', (event) => {
@@ -83,31 +87,60 @@
       openDialog($('#demo-dialog'), button);
     });
   });
+  for (const [attribute, dialogId] of [['data-open-core', '#core-dialog'], ['data-open-contact', '#contact-dialog']]) {
+    $$(`[${attribute}]`).forEach((button) => {
+      button.addEventListener('click', (event) => {
+        event.preventDefault();
+        openDialog($(dialogId), button);
+      });
+    });
+  }
+
+  const renderCoreAvailability = () => {
+    const labels = {
+      verification: 'Sudah digunakan di operasional IbrahimGroup — verifikasi/UAT AqiqahPro berlangsung',
+      available: 'Tersedia',
+      beta: 'Beta',
+      'coming-soon': 'Segera hadir',
+      excluded: 'Tidak termasuk',
+    };
+    $$('[data-core-status]').forEach((badge) => {
+      const key = badge.dataset.coreFeature;
+      const status = key ? window.AQIQAH_PRO_CONFIG?.core?.features?.[key]?.status : 'verification';
+      badge.textContent = labels[status] || labels.verification;
+      badge.dataset.status = Object.hasOwn(labels, status) ? status : 'verification';
+    });
+    $$('[data-core-note]').forEach((note) => {
+      note.textContent = 'Status setiap fitur Core mengikuti hasil verifikasi dan UAT AqiqahPro per role.';
+    });
+  };
+  window.addEventListener('aqiqahpro:config-changed', renderCoreAvailability);
+  renderCoreAvailability();
 
   const demoSteps = [
     {
       title: 'Kenali pelanggan dari chat pertama.',
-      description: 'Contoh: Bu Rina menanyakan aqiqah untuk putranya, Muhammad Arkan. Kebutuhan 2 ekor domba, tanggal acara 8 November 2026, dan area pengiriman Bandung dicatat pada profil pelanggan.',
+      description: 'Contoh: Pelanggan Demo menanyakan aqiqah untuk Ananda Demo. Kebutuhan 2 ekor domba, tanggal acara 8 November 2026, dan area pengiriman demo dicatat pada profil pelanggan.',
       state: 'Lead baru',
     },
     {
       title: 'Tentukan langkah follow-up berikutnya.',
-      description: 'Contoh: Nisa menjadi penanggung jawab prospek Bu Rina. Jadwalkan tindak lanjut untuk mengonfirmasi Paket Berkah, 140 box, dan alamat pengiriman di Bandung.',
+      description: 'Contoh: Admin Demo menjadi penanggung jawab prospek Pelanggan Demo. Jadwalkan tindak lanjut untuk mengonfirmasi Paket Berkah, 140 box, dan alamat pengiriman di Area demo.',
       state: 'Follow-up',
     },
     {
       title: 'Susun pesanan dengan detail yang lengkap.',
-      description: 'Contoh: Bu Rina menyetujui Paket Berkah, 2 ekor domba, dan 140 box untuk acara Muhammad Arkan pada 8 November 2026. Data yang sama menjadi acuan quotation dan order untuk ditinjau tim.',
+      description: 'Contoh: Pelanggan Demo menyetujui Paket Berkah, 2 ekor domba, dan 140 box untuk acara Ananda Demo pada 8 November 2026. Data yang sama menjadi acuan quotation dan order untuk ditinjau tim.',
       state: 'Order dibuat',
     },
     {
       title: 'Pisahkan order dari pembayaran.',
-      description: 'Contoh: Admin memeriksa bukti DP dari Bu Rina dan mengonfirmasi pembayaran untuk order Muhammad Arkan. Status pembayaran diperbarui setelah verifikasi admin.',
+      description: 'Contoh: Admin memeriksa bukti DP dari Pelanggan Demo dan mengonfirmasi pembayaran untuk order Ananda Demo. Status pembayaran diperbarui setelah verifikasi admin.',
       state: 'DP terverifikasi',
     },
     {
       title: 'Teruskan pesanan sampai pengiriman.',
-      description: 'Contoh: Tim operasional meninjau jadwal produksi 140 box, label nama Muhammad Arkan, dan alamat Bandung. Pesanan disiapkan untuk dikirim pada 8 November 2026.',
+      description: 'Contoh: Tim operasional meninjau jadwal produksi 140 box, label nama Ananda Demo, dan alamat Area demo. Pesanan disiapkan untuk dikirim pada 8 November 2026.',
       state: 'Siap dikirim',
     },
   ];
