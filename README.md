@@ -47,6 +47,8 @@ Status awal Warehouse, RPH, stok hewan, dan akuntansi adalah `verification`, den
 
 Konten mengikuti PRD 1 November 2026 dan klarifikasi pemilik produk. Harga Core Rp800.000/bulan; harga dan kuota add-on CRM masih rencana. Core sudah digunakan di operasional IbrahimGroup tetapi belum dinyatakan lulus UAT formal AqiqahPro per role. Label “Segera hadir” saat ini hanya dipakai untuk CRM.
 
-Seluruh mockup diberi label “Ilustrasi tampilan”, dengan referensi `ORD-DEMO-001`, Pelanggan Demo, dan nominal contoh. Mockup tidak diklaim identik dengan production. Tidak ada URL, screenshot, logo pelanggan, atau transaksi production yang digunakan. Screenshot aktual baru dapat ditambahkan setelah tersedia environment demo yang datanya sudah disanitasi dan mendapat persetujuan publikasi. Biaya vendor dan Meta tidak dinyatakan gratis.
+Hero menggunakan dua file screenshot asli yang disediakan pemilik produk: `assets/laporan-analytics-asli.png` dan `assets/percakapan-chat-asli.png`. File disalin tanpa perubahan dan dapat dibuka dalam ukuran penuh. Screenshot tidak mengubah status UAT atau ketersediaan modul.
+
+Mockup konseptual lainnya diberi label “Ilustrasi tampilan”, dengan referensi `ORD-DEMO-001`, Pelanggan Demo, dan nominal contoh. Mockup tidak diklaim identik dengan production. Screenshot aktual hanya memakai lampiran yang secara eksplisit diberikan pemilik produk untuk halaman ini. Demo interaktif Core tetap menggunakan data fiktif. Biaya vendor dan Meta tidak dinyatakan gratis.
 
 Font Plus Jakarta Sans dan DM Sans dimuat dari Google Fonts. Bila koneksi tidak tersedia, halaman memakai Arial/sans-serif sebagai fallback; seluruh CSS, ikon, dan JavaScript tetap lokal.
